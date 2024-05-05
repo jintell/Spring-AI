@@ -9,7 +9,8 @@ This application is based on Spring Boot app using spring boot 3.2.5, gradle 8.7
 
 
 **Note:** You need to configure your Open Ai Api key and save in the environment variable  for the spring app, 
-and also for the env for the JUnit for test purposes/ 
+and also for the env for the JUnit for test purposes. Make sure the Ai-Test.MD is available with the prompts  
+
 
 # Running a Test
 * Please check under the test package -> service -> OpenAiServiceTest
