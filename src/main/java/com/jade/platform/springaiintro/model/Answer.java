@@ -5,6 +5,5 @@ package com.jade.platform.springaiintro.model;
  * @Email: josleke@gmail.com, josiah.adetayo@meld-tech.com
  * @Date: 5/6/24
  */
-public record Answer(String answer
-) {
+public record Answer(String answer) {
 }

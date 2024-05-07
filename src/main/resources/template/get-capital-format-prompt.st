@@ -1,2 +1,1 @@
-What is the capital of {stateOrCountry}? and who is the president or governor of {stateOrCountry}? Response in JSON
-with the name of the capital and president or governor in the property named `answer`
+What is the capital of {stateOrCountry}? and who is the president or governor of {stateOrCountry}? {format}
