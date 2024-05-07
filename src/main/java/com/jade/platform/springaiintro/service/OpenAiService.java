@@ -1,13 +1,18 @@
 package com.jade.platform.springaiintro.service;
 
 import com.jade.platform.springaiintro.model.Answer;
+import com.jade.platform.springaiintro.model.GetCapitalRequest;
+import com.jade.platform.springaiintro.model.GetPresidentRequest;
 import com.jade.platform.springaiintro.model.Question;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.retry.annotation.Retryable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * @Author: Josiah Adetayo
@@ -23,6 +28,12 @@ public class OpenAiService {
         this.chatClient = chatClient;
     }
 
+    @Value("classpath:template/get-capital-prompt.st")
+    private Resource getCapitalPrompt;
+
+    @Value("classpath:template/get-president-prompt.st")
+    private Resource getPresidentPrompt;
+
     public String getAnswer(String question) {
         PromptTemplate promptTemplate = new PromptTemplate(question);
         Prompt prompt = promptTemplate.create();
@@ -31,16 +42,28 @@ public class OpenAiService {
         return chatResponse.getResult().getOutput().getContent();
     }
 
-    @Retryable(maxAttempts = 5)
+
     public Answer getAnswer(Question question) {
-        System.out.println("Getting Answer...");
         System.out.println(question.question());
         PromptTemplate promptTemplate = new PromptTemplate(question.question());
-        System.out.println("Creating Prompt Template");
         Prompt prompt = promptTemplate.create();
-        System.out.println("Created Prompt Template");
         ChatResponse chatResponse = chatClient.call(prompt);
-        System.out.println("Chant Response now...");
+
+        return new Answer(chatResponse.getResult().getOutput().getContent());
+    }
+
+    public Answer getAnswer(GetCapitalRequest capitalRequest) {
+        PromptTemplate promptTemplate = new PromptTemplate(getCapitalPrompt);
+        Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", capitalRequest.stateOrCountry())); // This is binding
+        ChatResponse chatResponse = chatClient.call(prompt);
+
+        return new Answer(chatResponse.getResult().getOutput().getContent());
+    }
+
+    public Answer getAnswer(GetPresidentRequest presidentRequest) {
+        PromptTemplate promptTemplate = new PromptTemplate(getPresidentPrompt);
+        Prompt prompt = promptTemplate.create(Map.of("presidentOrCompany", presidentRequest.presidentOrCompany())); // This is binding
+        ChatResponse chatResponse = chatClient.call(prompt);
 
         return new Answer(chatResponse.getResult().getOutput().getContent());
     }

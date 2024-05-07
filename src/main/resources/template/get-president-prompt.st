@@ -1,0 +1,1 @@
+Who is the president of {presidentOrCompany}? and how many states or departments are there in {presidentOrCompany}?
