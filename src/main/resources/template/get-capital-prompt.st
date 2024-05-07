@@ -1,0 +1,1 @@
+What is the capital of {stateOrCountry}? and who is the president or governor of {stateOrCountry}?
